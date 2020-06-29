@@ -1,8 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
 
 // Route principale /api
-router.get('/api', (req, res) => {
+router.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 

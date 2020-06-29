@@ -9,9 +9,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 // Vérification de la connection
 sequelize
   .authenticate()
-  .then(function () {
+  .then(() => {
     console.log('connection avec la bd réuissite');
   })
-  .catch(function (err) {
-    console.log('Error de connection avec la bd' + ' ' + err);
+  .catch((err) => {
+    console.log(`Error de connection avec la bd ${err}`);
   });
