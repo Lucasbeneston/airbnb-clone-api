@@ -1,8 +1,10 @@
-const express = require("express");
-const app = express();
+const express = require('express'),
+  server = express(),
+  morgan = require('morgan'),
+  router = require('./routes/index');
 
-    app.get("/", function (req, res) {
-  res.send("Hello World");
-});
+server.use(morgan('dev'));
 
-app.listen(8021);
+server.use(router);
+
+server.listen(8021);
