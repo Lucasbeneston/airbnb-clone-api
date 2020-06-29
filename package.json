@@ -19,7 +19,9 @@
   "homepage": "https://github.com/Lucasbeneston/airbnb-clone-api#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.2.3"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
