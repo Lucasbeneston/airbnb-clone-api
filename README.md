@@ -1,12 +1,12 @@
 <!-- JOUR 2  -->
 
-Notion : Fixture / seeds (jeu de données test)
+Notion : Fixture / seeds (jeu de données test, pas obligatoire)
 
 A faire :
 
-- Installer Body-Parser
-- Installer Sequelize-cli
 - Installer uuid > Générer des id aléatoirement
+- User.create
+- .env
 
 - Sequelize
   Ressources :
