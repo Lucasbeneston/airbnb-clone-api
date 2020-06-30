@@ -43,6 +43,20 @@ module.exports = {
       cityId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: 'City',
+          key: 'id',
+          unique: true,
+        },
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+          unique: action_unique,
+        },
       },
       createdAt: {
         allowNull: false,

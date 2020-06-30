@@ -27,6 +27,18 @@ module.exports = {
       placeId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Place',
+          key: 'id',
+        },
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
