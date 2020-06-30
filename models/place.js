@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Place.init(
     {
-      id: DataTypes.UUID,
       city: DataTypes.STRING,
       user: DataTypes.STRING,
       name: DataTypes.STRING,

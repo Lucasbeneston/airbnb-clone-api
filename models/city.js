@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   City.init(
     {
-      id: DataTypes.UUID,
       name: DataTypes.STRING,
     },
     {

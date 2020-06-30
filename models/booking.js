@@ -1,5 +1,4 @@
 'use strict';
-
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
@@ -14,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Booking.init(
     {
-      id: DataTypes.UUID,
       place: DataTypes.STRING,
       user: DataTypes.STRING,
       checkIn: DataTypes.DATE,
