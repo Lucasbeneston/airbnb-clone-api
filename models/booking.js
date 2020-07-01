@@ -1,5 +1,7 @@
 'use strict';
+
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -9,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Users)
-      this.belongsTo(models.Place)
+      this.belongsTo(models.Users);
+      this.belongsTo(models.Place);
     }
   }
   Booking.init(

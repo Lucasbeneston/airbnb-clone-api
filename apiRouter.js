@@ -3,14 +3,13 @@ const express = require('express');
 const usersCtrl = require('./routes/usersCtrl');
 const { register } = require('./routes/usersCtrl');
 
-
 // Router
 exports.router = (function () {
-    const apiRouter = express.Router();
+  const apiRouter = express.Router();
 
-    // Users routes
-    apiRouter.route('/users/register/').post(usersCtrl.register);
-    apiRouter.route('/users/login/').post(usersCtrl.login);
+  // Users routes
+  apiRouter.route('/users/register/').post(usersCtrl.register);
+  apiRouter.route('/users/login/').post(usersCtrl.login);
 
-    return apiRouter;
+  return apiRouter;
 })();
