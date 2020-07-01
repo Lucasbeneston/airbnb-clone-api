@@ -1,3 +1,15 @@
+<!-- JOUR 3  -->
+npm install jsonwebtoken --save
+npm install bcryt --save
+
+- mettre en place BodyParser dans server.js 
+- créer un fichier userCtrl.js 
+- créer un fichier apiRouter.js dans lequel on ajoute nos routes (register, login en post) 
+- require l'apiRouter dans server.js et l'assigner
+- dans userCtrl.js on récupère les paramètres envoyer dans la requêtes et on ajoute une méthode findOne pour vérifier si l'utilisateur. On y crée un bcrypt.hash pour hasher le mot de passe de l'utilisateur
+
+
+
 <!-- JOUR 2  -->
 
 Notion : Fixture / seeds (jeu de données test, pas obligatoire)
