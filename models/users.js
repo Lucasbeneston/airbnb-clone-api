@@ -28,14 +28,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return Users;
 };
-ypes.STRING,
-      password: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: 'Users',
-    }
-  );
-
-  return Users;
-};
