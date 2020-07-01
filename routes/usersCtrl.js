@@ -10,21 +10,21 @@ module.exports = {
     const { firstName, lastName, email, password } = req.body;
 
     if (email == null || firstName == null || lastName == null || password == null) {
-      return res.status(400).json({ error: 'Paramètre manquant' });
+      res.status(400).json({ error: 'Paramètre manquant' });
     }
     // Verification pseudo length, firtName,lastName,email, password
 
     models.Users.findOne({
       attributes: ['email'],
-      where: { email: email },
+      where: { email },
     })
       .then((userFound) => {
         if (!userFound) {
           bcrypt.hash(password, 5, (err, bcryptedPassword) => {
-            var newUsers = models.Users.create({
-              firstName: firstName,
-              lastName: lastName,
-              email: email,
+            const newUsers = models.Users.create({
+              firstName,
+              lastName,
+              email,
               password: bcryptedPassword,
             })
               .then((newUsers) => {
@@ -37,7 +37,7 @@ module.exports = {
               });
           });
         } else {
-          return res.status(409).json({ error: 'Déjà loggé' });
+          res.status(409).json({ error: 'Déjà loggé' });
         }
       })
       .catch((err) => {
