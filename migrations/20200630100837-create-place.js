@@ -41,21 +41,23 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       cityId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'City',
+          allowNull: false,
+          model: {
+            tableName: 'Cities',
+          },
           key: 'id',
-          unique: true,
         },
       },
       userId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          allowNull: false,
+          model: {
+            tableName: 'Users',
+          },
           key: 'id',
-          unique: action_unique,
         },
       },
       createdAt: {

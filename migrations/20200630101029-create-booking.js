@@ -25,18 +25,22 @@ module.exports = {
         type: Sequelize.DATE,
       },
       placeId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Place',
+          allowNull: false,
+          model: {
+            tableName: 'Places',
+          },
           key: 'id',
         },
       },
       userId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          allowNull: false,
+          model: {
+            tableName: 'Users',
+          },
           key: 'id',
         },
       },
