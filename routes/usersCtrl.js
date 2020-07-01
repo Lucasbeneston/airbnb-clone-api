@@ -10,7 +10,7 @@ module.exports = {
     const { firstName, lastName, email, password } = req.body;
 
     if (email == null || firstName == null || lastName == null || password == null) {
-      return res.status(400).json({ error: 'paramètre manquant' });
+      return res.status(400).json({ error: 'Paramètre manquant' });
     }
     // Verification pseudo length, firtName,lastName,email, password
 
@@ -20,19 +20,19 @@ module.exports = {
     })
       .then((userFound) => {
         if (!userFound) {
-          bcrypt.hash(password, 5, function (err, bcryptedPassword) {
-            var newUser = models.Users.create({
+          bcrypt.hash(password, 5, (err, bcryptedPassword) => {
+            var newUsers = models.Users.create({
               firstName: firstName,
               lastName: lastName,
               email: email,
               password: bcryptedPassword,
             })
-              .then(function (newUsers) {
+              .then((newUsers) => {
                 return res.status(201).json({
                   userId: newUsers.id,
                 });
               })
-              .catch(function (err) {
+              .catch((err) => {
                 return res.status(500).json({ error: "Ne peut pas ajouter d'utilisateur" });
               });
           });
