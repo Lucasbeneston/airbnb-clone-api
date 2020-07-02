@@ -1,4 +1,4 @@
-'use strict';
+/* Au début de chaque fichier faire un descriptif de ce qu'il fait/à quoi il sert */
 
 const { Model } = require('sequelize');
 

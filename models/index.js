@@ -1,3 +1,5 @@
+/* Au début de chaque fichier faire un descriptif de ce qu'il fait/à quoi il sert */
+
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');

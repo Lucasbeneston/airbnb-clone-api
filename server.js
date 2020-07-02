@@ -8,7 +8,7 @@ const apiRouter = require('./apiRouter').router;
 
 const server = express();
 
-//Body parser config
+// Body parser config
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
