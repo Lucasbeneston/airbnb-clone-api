@@ -7,9 +7,15 @@ const models = require('../models');
 module.exports = {
   register: (req, res) => {
     // Params
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
 
-    if (email == null || firstName == null || lastName == null || password == null) {
+    if (
+      email == null ||
+      firstName == null ||
+      lastName == null ||
+      password == null ||
+      role == null
+    ) {
       res.status(400).json({ error: 'Paramètre manquant' });
     }
     // Verification pseudo length, firstName,lastName,email, password
@@ -26,9 +32,11 @@ module.exports = {
               lastName,
               email,
               password: bcryptedPassword,
+              role,
             })
               .then((newUsers) => {
                 return res.status(201).json({
+                  role: newUsers.role,
                   userId: newUsers.id,
                   firstName: newUsers.firstName,
                   lastName: newUsers.lastName,
@@ -68,6 +76,7 @@ module.exports = {
               return res.status(200).json({
                 token: jwtUtils.generateTokenForUser(userFound),
                 user: {
+                  role: userFound.role,
                   firstName: userFound.firstName,
                   lastName: userFound.lastName,
                   email: userFound.email,
