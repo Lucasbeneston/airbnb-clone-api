@@ -6,33 +6,48 @@ const models = require('../models');
 // Routes
 module.exports = {
   register: (req, res) => {
-    // Params
-    const { firstName, lastName, email, password, role } = req.body;
+    const user = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role,
+    };
 
-    if (
-      email == null ||
-      firstName == null ||
-      lastName == null ||
-      password == null ||
-      role == null
-    ) {
-      res.status(400).json({ error: 'Paramètre manquant' });
+    for (const key in user) {
+      if (
+        user[key] == null ||
+        user[key] === ''
+        // email == null ||
+        // email === '' ||
+        // firstName == null ||
+        // firstName === '' ||
+        // lastName == null ||
+        // lastName === '' ||
+        // password == null ||
+        // password === '' ||
+        // role == null ||
+        // role === ''
+      ) {
+        return res.status(400).json({ error: `Le champ ${key} n'est pas renseigné` });
+      }
     }
+
     // Verification pseudo length, firstName,lastName,email, password
 
     models.Users.findOne({
       attributes: ['email'],
-      where: { email },
+      where: { email: user.email },
     })
       .then((userFound) => {
         if (!userFound) {
-          bcrypt.hash(password, 5, (err, bcryptedPassword) => {
+          bcrypt.hash(user.password, 5, (err, bcryptedPassword) => {
             const newUsers = models.Users.create({
-              firstName,
-              lastName,
-              email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
               password: bcryptedPassword,
-              role,
+              role: user.role,
             })
               .then((newUsers) => {
                 return res.status(201).json({
@@ -48,7 +63,7 @@ module.exports = {
               });
           });
         } else {
-          res
+          return res
             .status(409)
             .json({ error: 'Un utilisateur utilisant cette adresse email est déjà enregistré' });
         }
@@ -76,7 +91,7 @@ module.exports = {
               return res.status(200).json({
                 token: jwtUtils.generateTokenForUser(userFound),
                 user: {
-                  role: userFound.role,
+                  role: userFound,
                   firstName: userFound.firstName,
                   lastName: userFound.lastName,
                   email: userFound.email,
