@@ -1,6 +1,6 @@
 // Imports
 const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+const jwtUtils = require('../utils/jwt.utils');
 const models = require('../models');
 
 // Routes
@@ -52,5 +52,34 @@ module.exports = {
       });
   },
 
-  login: (req, res) => {},
+  login: (req, res) => {
+    const { email, password } = req.body;
+
+    if (email == null || password == null) {
+      return res.status(400).json({ error: " S'il y a une erreur dans l'input" });
+    }
+
+    models.Users.findOne({
+      where: { email },
+    })
+      .then((userFound) => {
+        if (userFound) {
+          bcrypt.compare(password, userFound.password, (errBycrypt, resBycrypt) => {
+            if (resBycrypt) {
+              return res.status(200).json({
+                userId: userFound.id,
+                token: jwtUtils.generateTokenForUser(userFound),
+              });
+            } else {
+              return res.status(403).json({ error: 'invalid password' });
+            }
+          });
+        } else {
+          return res.status(404).json({ error: 'user not exsist in DB' });
+        }
+      })
+      .catch(function (err) {
+        res.status(500).json({ error: 'cannot fetch user' });
+      });
+  },
 };
