@@ -30,6 +30,10 @@ module.exports = {
               .then((newUsers) => {
                 return res.status(201).json({
                   userId: newUsers.id,
+                  firstName: newUsers.firstName,
+                  lastName: newUsers.lastName,
+                  email: newUsers.email,
+                  password: newUsers.password,
                   // Renvoyer role (string), first_name (string), last_name (string), email (string) et password (string)
                 });
               })
