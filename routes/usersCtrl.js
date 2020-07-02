@@ -15,30 +15,17 @@ module.exports = {
     };
 
     for (const key in user) {
-      if (
-        user[key] == null ||
-        user[key] === ''
-        // email == null ||
-        // email === '' ||
-        // firstName == null ||
-        // firstName === '' ||
-        // lastName == null ||
-        // lastName === '' ||
-        // password == null ||
-        // password === '' ||
-        // role == null ||
-        // role === ''
-      ) {
+      if (user[key] == null || user[key] === '') {
         return res.status(400).json({ error: `Le champ ${key} n'est pas renseigné` });
       }
     }
 
-    // Verification pseudo length, firstName,lastName,email, password
-
+    // Faire regEx pour le mail !!
     models.Users.findOne({
       attributes: ['email'],
       where: { email: user.email },
     })
+
       .then((userFound) => {
         if (!userFound) {
           bcrypt.hash(user.password, 5, (err, bcryptedPassword) => {
@@ -91,15 +78,14 @@ module.exports = {
               return res.status(200).json({
                 token: jwtUtils.generateTokenForUser(userFound),
                 user: {
-                  role: userFound,
+                  role: userFound.role,
                   firstName: userFound.firstName,
                   lastName: userFound.lastName,
                   email: userFound.email,
                 },
               });
-            } else {
-              return res.status(403).json({ error: "Votre mot de passe n'est pas correct" });
             }
+            return res.status(403).json({ error: "Votre mot de passe n'est pas correct" });
           });
         } else {
           return res.status(404).json({ error: "L'utilisateur est introuvable" });
