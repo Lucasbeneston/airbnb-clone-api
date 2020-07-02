@@ -20,7 +20,7 @@ module.exports = {
       }
     }
 
-    // Faire regEx pour le mail !!
+    // Faire regEx pour le mail !!!
     models.Users.findOne({
       attributes: ['email'],
       where: { email: user.email },
