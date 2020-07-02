@@ -33,7 +33,6 @@ module.exports = {
                   firstName: newUsers.firstName,
                   lastName: newUsers.lastName,
                   email: newUsers.email,
-                  // Renvoyer role (string), first_name (string), last_name (string), email (string) et password (string)
                 });
               })
               .catch((err) => {
@@ -67,11 +66,15 @@ module.exports = {
           bcrypt.compare(password, userFound.password, (errBycrypt, resBycrypt) => {
             if (resBycrypt) {
               return res.status(200).json({
-                userId: userFound.id,
                 token: jwtUtils.generateTokenForUser(userFound),
+                user: {
+                  firstName: userFound.firstName,
+                  lastName: userFound.lastName,
+                  email: userFound.email,
+                },
               });
             } else {
-              return res.status(403).json({ error: 'Mot de passe invalide' });
+              return res.status(403).json({ error: "Votre mot de passe n'est pas correct" });
             }
           });
         } else {
