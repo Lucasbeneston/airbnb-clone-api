@@ -12,7 +12,7 @@ module.exports = {
     if (email == null || firstName == null || lastName == null || password == null) {
       res.status(400).json({ error: 'Paramètre manquant' });
     }
-    // Verification pseudo length, firtName,lastName,email, password
+    // Verification pseudo length, firstName,lastName,email, password
 
     models.Users.findOne({
       attributes: ['email'],
@@ -30,6 +30,7 @@ module.exports = {
               .then((newUsers) => {
                 return res.status(201).json({
                   userId: newUsers.id,
+                  // Renvoyer role (string), first_name (string), last_name (string), email (string) et password (string)
                 });
               })
               .catch((err) => {
@@ -37,7 +38,9 @@ module.exports = {
               });
           });
         } else {
-          res.status(409).json({ error: 'Déjà loggé' });
+          res
+            .status(409)
+            .json({ error: 'Un utilisateur utilisant cette adresse email est déjà enregistré' });
         }
       })
       .catch((err) => {
