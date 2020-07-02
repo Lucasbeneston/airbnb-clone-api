@@ -1,7 +1,7 @@
 {
   "name": "airbnb-clone-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "<!-- JOUR 3  --> npm install jsonwebtoken --save npm install bcryt --save",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,6 +28,7 @@
     "uuid4": "^2.0.2"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",

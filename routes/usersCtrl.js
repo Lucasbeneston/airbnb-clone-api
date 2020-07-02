@@ -5,55 +5,83 @@ const models = require('../models');
 
 // Routes
 
+// Routes
 module.exports = {
-  register(req, res) {
+  register: (req, res) => {
     // Params
-    const { firstName } = req.body;
-    const { lastName } = req.body;
-    const { email } = req.body;
-    const { password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     if (email == null || firstName == null || lastName == null || password == null) {
-      return res.status(400).json({ error: 'paramètre manquant' });
+      res.status(400).json({ error: 'Paramètre manquant' });
     }
-    // verification pseudo length, firtName,lastName,email, password
+    // Verification pseudo length, firstName,lastName,email, password
 
     models.Users.findOne({
       attributes: ['email'],
       where: { email },
     })
-      .then(function (userFound) {
+      .then((userFound) => {
         if (!userFound) {
-          bcrypt.hash(password, 5, function (err, bcryptedPassword) {
-            const newUser = models.Users.create({
+          bcrypt.hash(password, 5, (err, bcryptedPassword) => {
+            const newUsers = models.Users.create({
               firstName,
               lastName,
               email,
               password: bcryptedPassword,
             })
-              .then(function (newUser) {
+              .then((newUsers) => {
                 return res.status(201).json({
-                  userId: newUser.id,
+                  userId: newUsers.id,
+                  firstName: newUsers.firstName,
+                  lastName: newUsers.lastName,
+                  email: newUsers.email,
+                  password: newUsers.password,
+                  // Renvoyer role (string), first_name (string), last_name (string), email (string) et password (string)
                 });
               })
-              .catch(function (err) {
+              .catch((err) => {
                 return res.status(500).json({ error: "Ne peut pas ajouter d'utilisateur" });
               });
           });
         } else {
-          return res.status(409).json({ error: "l'utilisateur n'existe pas" });
+          res
+            .status(409)
+            .json({ error: 'Un utilisateur utilisant cette adresse email est déjà enregistré' });
         }
       })
-      .catch(function (err) {
+      .catch((err) => {
         return res.status(500).json({ error: "Impossible de vérifier l'utilisateur" });
       });
   },
-  login(req, res) {
-    const { email } = req.body;
-    const { password } = req.body;
 
-    if (email == null || password == null {
-      return res.status(400).json({})
+  login: (req, res) => {
+    const { email, password } = req.body;
+
+    if (email == null || password == null) {
+      return res.status(400).json({ error: " S'il y a une erreur dans l'input" });
+    }
+
+    models.Users.findOne({
+      where: { email },
     })
+      .then((userFound) => {
+        if (userFound) {
+          bcrypt.compare(password, userFound.password, (errBycrypt, resBycrypt) => {
+            if (resBycrypt) {
+              return res.status(200).json({
+                userId: userFound.id,
+                token: jwtUtils.generateTokenForUser(userFound),
+              });
+            } else {
+              return res.status(403).json({ error: 'invalid password' });
+            }
+          });
+        } else {
+          return res.status(404).json({ error: 'user not exsist in DB' });
+        }
+      })
+      .catch(function (err) {
+        res.status(500).json({ error: 'cannot fetch user' });
+      });
   },
 };
