@@ -1,6 +1,6 @@
 // Imports
 const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+const jwtUtils = require('../utils/jwt.utils');
 const models = require('../models');
 
 // Routes
@@ -33,7 +33,6 @@ module.exports = {
                   firstName: newUsers.firstName,
                   lastName: newUsers.lastName,
                   email: newUsers.email,
-                  password: newUsers.password,
                   // Renvoyer role (string), first_name (string), last_name (string), email (string) et password (string)
                 });
               })
@@ -52,5 +51,35 @@ module.exports = {
       });
   },
 
-  login: (req, res) => {},
+  login: (req, res) => {
+    const { email, password } = req.body;
+
+    if (email == null || password == null) {
+      return res.status(400).json({ error: 'Veuillez remplir tous les champs' });
+    }
+
+    // A FAIRE : vérifier mail (regex) & la longueur du password
+    models.Users.findOne({
+      where: { email },
+    })
+      .then((userFound) => {
+        if (userFound) {
+          bcrypt.compare(password, userFound.password, (errBycrypt, resBycrypt) => {
+            if (resBycrypt) {
+              return res.status(200).json({
+                userId: userFound.id,
+                token: jwtUtils.generateTokenForUser(userFound),
+              });
+            } else {
+              return res.status(403).json({ error: 'Mot de passe invalide' });
+            }
+          });
+        } else {
+          return res.status(404).json({ error: "L'utilisateur est introuvable" });
+        }
+      })
+      .catch((err) => {
+        return res.status(500).json({ error: "Impossible de vérifier l'user" });
+      });
+  },
 };
