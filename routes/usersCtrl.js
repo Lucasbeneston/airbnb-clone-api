@@ -1,42 +1,48 @@
 // Imports
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const jwtUtils = require('../utils/jwt.utils');
 const models = require('../models');
-
-// Routes
 
 // Routes
 module.exports = {
   register: (req, res) => {
-    // Params
-    const { firstName, lastName, email, password } = req.body;
+    const user = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role,
+    };
 
-    if (email == null || firstName == null || lastName == null || password == null) {
-      res.status(400).json({ error: 'Paramètre manquant' });
+    for (const key in user) {
+      if (user[key] == null || user[key] === '') {
+        return res.status(400).json({ error: `Le champ ${key} n'est pas renseigné` });
+      }
     }
-    // Verification pseudo length, firstName,lastName,email, password
 
+    // Faire regEx pour le mail !!!
     models.Users.findOne({
       attributes: ['email'],
-      where: { email },
+      where: { email: user.email },
     })
+
       .then((userFound) => {
         if (!userFound) {
-          bcrypt.hash(password, 5, (err, bcryptedPassword) => {
+          bcrypt.hash(user.password, 5, (err, bcryptedPassword) => {
             const newUsers = models.Users.create({
-              firstName,
-              lastName,
-              email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
               password: bcryptedPassword,
+              role: user.role,
             })
               .then((newUsers) => {
                 return res.status(201).json({
+                  role: newUsers.role,
                   userId: newUsers.id,
                   firstName: newUsers.firstName,
                   lastName: newUsers.lastName,
                   email: newUsers.email,
-                  password: newUsers.password,
-                  // Renvoyer role (string), first_name (string), last_name (string), email (string) et password (string)
                 });
               })
               .catch((err) => {
@@ -44,7 +50,7 @@ module.exports = {
               });
           });
         } else {
-          res
+          return res
             .status(409)
             .json({ error: 'Un utilisateur utilisant cette adresse email est déjà enregistré' });
         }
@@ -58,9 +64,10 @@ module.exports = {
     const { email, password } = req.body;
 
     if (email == null || password == null) {
-      return res.status(400).json({ error: " S'il y a une erreur dans l'input" });
+      return res.status(400).json({ error: 'Veuillez remplir tous les champs' });
     }
 
+    // A FAIRE : vérifier mail (regex) & la longueur du password
     models.Users.findOne({
       where: { email },
     })
@@ -69,19 +76,23 @@ module.exports = {
           bcrypt.compare(password, userFound.password, (errBycrypt, resBycrypt) => {
             if (resBycrypt) {
               return res.status(200).json({
-                userId: userFound.id,
                 token: jwtUtils.generateTokenForUser(userFound),
+                user: {
+                  role: userFound.role,
+                  firstName: userFound.firstName,
+                  lastName: userFound.lastName,
+                  email: userFound.email,
+                },
               });
-            } else {
-              return res.status(403).json({ error: 'invalid password' });
             }
+            return res.status(403).json({ error: "Votre mot de passe n'est pas correct" });
           });
         } else {
-          return res.status(404).json({ error: 'user not exsist in DB' });
+          return res.status(404).json({ error: "L'utilisateur est introuvable" });
         }
       })
-      .catch(function (err) {
-        res.status(500).json({ error: 'cannot fetch user' });
+      .catch((err) => {
+        return res.status(500).json({ error: "Impossible de vérifier l'user" });
       });
   },
 };

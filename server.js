@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 // const router = require('./routes/index');
 const apiRouter = require('./apiRouter').router;
 
-const bodyParser = require('body-parser');
-
 const server = express();
 
 server.get('/', function (req, res) {
