@@ -7,12 +7,12 @@ const bodyParser = require('body-parser');
 
 const server = express();
 
-server.get('/', function (req, res) {
+server.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.status(200).send('<h1>Hello World !</h1>');
 });
 
-//Body parser config
+// Body parser config
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
@@ -22,5 +22,5 @@ server.use(morgan('dev'));
 server.use('/api', apiRouter);
 
 server.listen(8021, () => {
-  console.log('ok mec');
+  console.log('Server start');
 });
