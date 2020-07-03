@@ -1,3 +1,9 @@
+Mettre en marche le fichier:
+
+- npm i
+- pour les linux changer dans le fichier config.js : "port": "3306"
+- pour les macs changer dans le fichier config.js : "port": "8889"
+
 <!-- JOUR 3  -->
 
 npm install jsonwebtoken --save
