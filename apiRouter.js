@@ -12,9 +12,6 @@ exports.router = (() => {
   apiRouter.route('/signin').post(usersCtrl.login);
 
   // Places routes
-  apiRouter.get('/places', (req, res) => {
-    res.json({ message: 'Places ok' });
-  });
   apiRouter.post('/places', placesCtrl.addPlaces);
 
   return apiRouter;
