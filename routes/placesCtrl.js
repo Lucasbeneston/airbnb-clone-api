@@ -17,16 +17,6 @@ module.exports = {
       priceByNight: req.body.priceByNight,
     };
 
-    // const getPlaceById = await Place.findByPk(placeId, {
-    //   include: [
-    //     {
-    //       model: City,
-    //       attributes: ['name'],
-    //     },
-    //   ],
-    // });
-    // console.log(getPlaceById);
-
     for (const key in place) {
       if (place[key] == null || place[key] === '') {
         return res.status(400).json({ error: `Le champ ${key} n'est pas renseigné` });
